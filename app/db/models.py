@@ -7,10 +7,18 @@ from app.utils.logger import get_logger
 logger = get_logger(__name__)
 
 class User(BaseModel):
-    user_id: int
+    user_id: Optional[int] = None
     email: EmailStr
     subscription_type: str
     created_at: datetime = datetime.now()
+
+    @validator('email')
+    def validate_email_format(cls, v):
+        import re
+        email_regex = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+        if not re.match(email_regex, v):
+            raise ValueError("Invalid email format")
+        return v
 
     @validator('subscription_type')
     def validate_subscription_type(cls, v):
@@ -20,7 +28,7 @@ class User(BaseModel):
         return v
 
     @classmethod
-    async def create(cls, email: str, subscription_type: str) -> 'User':
+    async def create(cls, email: str, subscription_type: str, user_id: Optional[int] = None) -> 'User':
         """Create a new user in Supabase."""
         try:
             client = get_database_client().client
@@ -34,6 +42,9 @@ class User(BaseModel):
                 'subscription_type': subscription_type,
                 'created_at': datetime.now().isoformat()
             }
+            if user_id is not None:
+                data['user_id'] = user_id
+
             result = client.table('users').insert(data).execute()
             
             if result.data:
@@ -55,10 +66,12 @@ class User(BaseModel):
             raise
 
 class Repository(BaseModel):
-    repo_id: int
+    repo_id: Optional[int] = None
+    user_id: int
+    name: str
     owner: str
-    submission_date: datetime
-    status: str
+    submission_date: datetime = datetime.now()
+    status: str = 'active'
 
     @validator('owner')
     def validate_owner(cls, v):
@@ -74,11 +87,13 @@ class Repository(BaseModel):
         return v
 
     @classmethod
-    async def create(cls, owner: str, status: str = 'active') -> 'Repository':
+    async def create(cls, user_id: int, name: str, owner: str, status: str = 'active') -> 'Repository':
         """Create a new repository submission."""
         try:
             client = get_database_client().client
             data = {
+                'user_id': user_id,
+                'name': name,
                 'owner': owner,
                 'submission_date': datetime.now().isoformat(),
                 'status': status
@@ -119,11 +134,14 @@ class Repository(BaseModel):
             raise
 
 class Review(BaseModel):
-    review_id: int
+    review_id: Optional[int] = None
     repo_id: int
-    file_reviews: str
-    batch_reviews: str
-    final_review: str
+    user_id: int
+    rating: int
+    comment: str
+    file_reviews: Optional[str] = None
+    batch_reviews: Optional[str] = None
+    final_review: Optional[str] = None
 
     @validator('file_reviews', 'batch_reviews', 'final_review')
     def validate_reviews(cls, v):
@@ -132,7 +150,10 @@ class Review(BaseModel):
         return v
 
     @classmethod
-    async def create(cls, repo_id: int, file_reviews: str, batch_reviews: str, final_review: str) -> 'Review':
+    async def create(cls, repo_id: int, user_id: int, rating: int, comment: str, 
+                     file_reviews: Optional[str] = None, 
+                     batch_reviews: Optional[str] = None, 
+                     final_review: Optional[str] = None) -> 'Review':
         """Create a new review."""
         try:
             client = get_database_client().client
@@ -143,6 +164,9 @@ class Review(BaseModel):
 
             data = {
                 'repo_id': repo_id,
+                'user_id': user_id,
+                'rating': rating,
+                'comment': comment,
                 'file_reviews': file_reviews,
                 'batch_reviews': batch_reviews,
                 'final_review': final_review
