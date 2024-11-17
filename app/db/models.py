@@ -4,7 +4,7 @@ import json
 import traceback
 from datetime import datetime
 from typing import List, Optional, Dict, Any, Union
-from pydantic import BaseModel, EmailStr, field_validator, ConfigDict
+from pydantic import BaseModel, EmailStr, validator
 from supabase import create_client, Client
 from postgrest.exceptions import APIError
 
@@ -38,7 +38,8 @@ def get_database_client() -> DatabaseClient:
     return DatabaseClient()
 
 class User(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
+    class Config:
+        orm_mode = True
 
     user_id: Optional[int] = None
     email: EmailStr
@@ -46,16 +47,14 @@ class User(BaseModel):
     subscription_type: str
     created_at: datetime = datetime.now()
 
-    @field_validator('email')
-    @classmethod
+    @validator('email')
     def validate_email_uniqueness(cls, email):
         """Validate email uniqueness."""
         if not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', email):
             raise ValueError("Invalid email format")
         return email
 
-    @field_validator('subscription_type')
-    @classmethod
+    @validator('subscription_type')
     def validate_subscription_type(cls, subscription_type):
         """Validate subscription type."""
         valid_types = ['basic', 'premium', 'enterprise']
@@ -89,7 +88,8 @@ class User(BaseModel):
         return cls(**result.data[0])
 
 class Repository(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
+    class Config:
+        orm_mode = True
 
     repo_id: str
     user_id: int
@@ -100,8 +100,7 @@ class Repository(BaseModel):
     file_path: Optional[str] = None
     created_at: Union[datetime, str] = datetime.now()
 
-    @field_validator('status')
-    @classmethod
+    @validator('status')
     def validate_status(cls, status):
         """Validate repository status."""
         valid_statuses = ['active', 'archived', 'pending']
@@ -109,8 +108,7 @@ class Repository(BaseModel):
             raise ValueError("Invalid repository status")
         return status
 
-    @field_validator('submission_method')
-    @classmethod
+    @validator('submission_method')
     def validate_submission_method(cls, submission_method):
         """Validate submission method."""
         valid_methods = ['github_url', 'zip_file']
@@ -153,7 +151,8 @@ class Repository(BaseModel):
         return cls(**response_data)
 
 class Review(BaseModel):
-    model_config = ConfigDict(from_attributes=True)
+    class Config:
+        orm_mode = True
 
     review_id: Optional[str] = None
     repo_id: int
@@ -167,17 +166,16 @@ class Review(BaseModel):
     final_review: Optional[Dict[str, Any]] = None
     code_quality_metrics: Optional[Dict[str, Any]] = {}
 
-    def model_dump(self) -> Dict[str, Any]:
-        """Override model_dump to handle datetime serialization."""
-        data = super().model_dump()
+    def dict(self) -> Dict[str, Any]:
+        """Override dict to handle datetime serialization."""
+        data = super().dict()
         # Convert datetime objects to ISO format strings
         for field in ['created_at', 'timestamp']:
             if isinstance(data.get(field), datetime):
                 data[field] = data[field].isoformat()
         return data
 
-    @field_validator('rating')
-    @classmethod
+    @validator('rating')
     def validate_rating(cls, rating):
         """Validate review rating."""
         if rating is not None and not 1 <= rating <= 5:
@@ -186,7 +184,7 @@ class Review(BaseModel):
 
     def save(self) -> 'Review':
         """Save the review to the database."""
-        data = self.model_dump()
+        data = self.dict()
         
         client = get_database_client().client
         result = client.table('reviews').upsert(data).execute()

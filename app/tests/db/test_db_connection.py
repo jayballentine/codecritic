@@ -6,6 +6,10 @@ from dotenv import load_dotenv
 # Load environment variables from .env.example
 load_dotenv('.env.example')
 
+@pytest.mark.skipif(
+    os.getenv('ENVIRONMENT') == 'test',
+    reason="Skip Supabase connection test in test environment"
+)
 def test_supabase_connection():
     """
     Test Supabase connection by validating URL and key
@@ -15,6 +19,10 @@ def test_supabase_connection():
     2. Verify they are non-empty and follow expected format
     3. Attempt to create a Supabase client
     """
+    # Skip if we're in test environment
+    if os.getenv('ENVIRONMENT') == 'test':
+        pytest.skip("Skipping Supabase connection test in test environment")
+    
     supabase_url = os.getenv('SUPABASE_URL')
     supabase_key = os.getenv('SUPABASE_KEY')
     

@@ -8,11 +8,23 @@ from app.utils.security import SecurityUtilities
 from postgrest.exceptions import APIError
 
 class SessionManager:
-    def __init__(self):
-        self.client = get_database_client().client
+    _instance = None
+
+    def __init__(self, database_client=None):
+        self.client = database_client.client if database_client else get_database_client().client
         # Initialize encryption key
         self.encryption_key = os.getenv('SESSION_ENCRYPTION_KEY', Fernet.generate_key())
         self.fernet = Fernet(self.encryption_key)
+
+    @classmethod
+    def get_instance(cls, database_client=None):
+        if cls._instance is None:
+            cls._instance = cls(database_client)
+        return cls._instance
+
+    @classmethod
+    def reset_instance(cls):
+        cls._instance = None
 
     def _encrypt_token(self, token: str) -> str:
         """Encrypt a token before storage"""
@@ -147,24 +159,25 @@ class SessionManager:
 
         return result.data['token'] if result.data else None
 
-# Initialize global session manager
-_session_manager = SessionManager()
+def get_session_manager(database_client=None):
+    """Get the global session manager instance"""
+    return SessionManager.get_instance(database_client)
 
 # Public interface functions
 def create_user_session(user_id: int, token_expiry: timedelta = None) -> Dict:
-    return _session_manager.create_session(user_id, token_expiry)
+    return get_session_manager().create_session(user_id, token_expiry)
 
 def validate_session(session_id: str) -> bool:
-    return _session_manager.validate_session(session_id)
+    return get_session_manager().validate_session(session_id)
 
 def refresh_session(session_id: str) -> Dict:
-    return _session_manager.refresh_session(session_id)
+    return get_session_manager().refresh_session(session_id)
 
 def get_active_sessions(user_id: int) -> List[Dict]:
-    return _session_manager.get_active_sessions(user_id)
+    return get_session_manager().get_active_sessions(user_id)
 
 def logout_user(user_id: int) -> None:
-    return _session_manager.logout_session(user_id)
+    return get_session_manager().logout_session(user_id)
 
 def get_encrypted_token(session_id: str) -> Optional[str]:
-    return _session_manager.get_encrypted_token(session_id)
+    return get_session_manager().get_encrypted_token(session_id)

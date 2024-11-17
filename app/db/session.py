@@ -7,31 +7,10 @@ from app.utils.logger import get_logger
 
 logger = get_logger(__name__)
 
-class MockSupabaseClient:
-    """Mock Supabase client for testing subscription operations."""
-    _subscriptions: Dict[str, Any] = {}
-
-    @classmethod
-    def create_subscription(cls, subscription):
-        """Create a subscription in the mock database."""
-        cls._subscriptions[subscription.user_id] = subscription
-        return subscription
-
-    @classmethod
-    def get_subscription(cls, user_id: str):
-        """Retrieve a subscription by user ID."""
-        return cls._subscriptions.get(user_id)
-
-    @classmethod
-    def update_subscription(cls, subscription):
-        """Update an existing subscription."""
-        cls._subscriptions[subscription.user_id] = subscription
-        return subscription
-
 class SessionLocal:
     """Local session class for database operations."""
-    def __init__(self):
-        self._db_client = get_database_client()
+    def __init__(self, database_client=None):
+        self._db_client = database_client if database_client else get_database_client()
         self.client = self._db_client.client
         self._in_transaction = False
 
@@ -78,9 +57,9 @@ class SessionLocal:
         pass
 
 class Session:
-    def __init__(self):
+    def __init__(self, database_client=None):
         """Initialize the Session class."""
-        self._db_client = get_database_client()
+        self._db_client = database_client if database_client else get_database_client()
 
     @contextmanager
     def begin(self) -> Generator[SessionLocal, None, None]:
@@ -95,7 +74,7 @@ class Session:
         Yields:
             SessionLocal: Active database session
         """
-        session = SessionLocal()
+        session = SessionLocal(self._db_client)
         try:
             session.begin()
             yield session
@@ -109,14 +88,14 @@ class Session:
             finally:
                 session.close()
 
-def get_session() -> Session:
+def get_session(database_client=None) -> Session:
     """
     Get a new database session.
 
     Returns:
         Session: Configured database session
     """
-    return Session()
+    return Session(database_client)
 
 def get_supabase_client() -> Client:
     """
@@ -126,6 +105,3 @@ def get_supabase_client() -> Client:
         Client: Supabase client instance
     """
     return get_database_client().client
-
-# For testing purposes, use the mock Supabase client
-supabase = MockSupabaseClient()

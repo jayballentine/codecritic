@@ -5,7 +5,7 @@ import jwt
 from jwt.exceptions import ExpiredSignatureError, InvalidSignatureError
 from postgrest.exceptions import APIError
 from app.utils.security import SecurityUtilities
-from app.auth.session_management import _session_manager, create_user_session
+from app.auth.session_management import get_session_manager, create_user_session
 
 # Constants for token configuration
 REFRESH_TOKEN_EXPIRY = timedelta(days=7)  # Maximum time a token can be refreshed
@@ -85,7 +85,7 @@ def refresh_expired_token(token: str) -> str:
         
     try:
         # First check if session exists and is active
-        session = _session_manager.client.table('sessions')\
+        session = get_session_manager().client.table('sessions')\
             .select('*')\
             .eq('session_id', payload['session_id'])\
             .eq('is_active', True)\
@@ -105,7 +105,7 @@ def refresh_expired_token(token: str) -> str:
         raise ValueError("Refresh token has expired")
         
     # Invalidate the old session
-    _session_manager.client.table('sessions')\
+    get_session_manager().client.table('sessions')\
         .update({'is_active': False})\
         .eq('session_id', payload['session_id'])\
         .execute()
@@ -144,7 +144,7 @@ def validate_refresh_token(token: str) -> bool:
                 
             try:
                 # Check if session is still active
-                session = _session_manager.client.table('sessions')\
+                session = get_session_manager().client.table('sessions')\
                     .select('*')\
                     .eq('session_id', payload['session_id'])\
                     .eq('is_active', True)\

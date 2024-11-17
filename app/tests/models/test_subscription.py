@@ -1,7 +1,7 @@
 import pytest
 from datetime import datetime, timedelta
 from app.models.subscription import Subscription
-from app.db.session import supabase
+from app.tests.utils.test_utils import mock_supabase
 
 class TestSubscription:
     def test_valid_plan_types(self):
@@ -67,17 +67,17 @@ class TestSubscription:
         subscription = Subscription(user_id='test_user', plan_type='Pro')
         
         # Test creating subscription in Supabase
-        created_subscription = supabase.create_subscription(subscription)
+        created_subscription = mock_supabase.create_subscription(subscription)
         assert created_subscription is not None
         assert created_subscription.user_id == 'test_user'
         assert created_subscription.plan_type == 'Pro'
 
         # Test retrieving subscription
-        retrieved_subscription = supabase.get_subscription('test_user')
+        retrieved_subscription = mock_supabase.get_subscription('test_user')
         assert retrieved_subscription is not None
         assert retrieved_subscription.plan_type == 'Pro'
 
         # Test updating subscription
         retrieved_subscription.upgrade_plan('Enterprise')
-        updated_subscription = supabase.update_subscription(retrieved_subscription)
+        updated_subscription = mock_supabase.update_subscription(retrieved_subscription)
         assert updated_subscription.plan_type == 'Enterprise'

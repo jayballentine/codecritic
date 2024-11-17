@@ -11,17 +11,26 @@ load_dotenv(env_path, override=True)
 import pytest
 from datetime import datetime, timedelta, timezone
 from jwt.exceptions import ExpiredSignatureError, InvalidSignatureError
-from app.db.models import User, get_database_client
+from app.db.models import User
 from app.utils.security import SecurityUtilities
-from app.auth.session_management import create_user_session
+from app.auth.session_management import SessionManager, get_session_manager, create_user_session
 from app.auth.token_refresh import REFRESH_TOKEN_EXPIRY, ACCESS_TOKEN_EXPIRY, _parse_datetime
+from app.tests.utils.test_utils import get_mock_database_client
+
+# Mock the database client
+import app.db.models
+app.db.models.get_database_client = get_mock_database_client
 
 class TestTokenRefresh:
     @pytest.fixture(autouse=True)
     def setup(self):
         """Setup test database and create test user"""
         try:
-            self.client = get_database_client().client
+            # Reset session manager to use mock database
+            SessionManager.reset_instance()
+            mock_db = get_mock_database_client()
+            self.client = mock_db.client
+            get_session_manager(mock_db)  # Initialize session manager with mock db
             
             # Create test user
             self.test_user = User.create(
