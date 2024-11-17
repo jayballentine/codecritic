@@ -18,6 +18,38 @@ jobs:
       with:
         python-version: '3.10'
     
+    - name: Create .env.test file
+      run: |
+        cat > .env.test << EOL
+        # Supabase Configuration
+        SUPABASE_URL=${{ secrets.SUPABASE_URL }}
+        SUPABASE_KEY=${{ secrets.SUPABASE_KEY }}
+
+        # GitHub OAuth Configuration
+        GITHUB_CLIENT_ID=${{ secrets.CLIENT_ID }}
+        GITHUB_CLIENT_SECRET=${{ secrets.CLIENT_SECRET }}
+        GITHUB_HOMEPAGE_URL=${{ secrets.HOMEPAGE_URL }}
+        GITHUB_REDIRECT_URI=${{ secrets.REDIRECT_URI }}
+        GITHUB_WEBHOOK_URL=${{ secrets.WEBHOOK_URL }}
+
+        # GitHub Personal Access Token
+        GITHUB_PAT=${{ secrets.PERSONAL_ACCESS_TOKEN }}
+
+        # SendGrid Email Service
+        SENDGRID_API_KEY=${{ secrets.SENDGRID_API_KEY }}
+
+        # LLM API Keys
+        OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
+        ANTHROPIC_API_KEY=${{ secrets.ANTHROPIC_API_KEY }}
+
+        # JWT Configuration
+        JWT_SECRET_KEY=${{ secrets.JWT_SECRET_KEY }}
+
+        # Environment Configuration
+        ENVIRONMENT=test
+        EOL
+        cat .env.test
+    
     - name: Install dependencies
       run: |
         python -m pip install --upgrade pip
@@ -27,18 +59,5 @@ jobs:
     - name: Run pytest
       env:
         PYTHONPATH: .
-        SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-        SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
-        GITHUB_CLIENT_ID: ${{ secrets.CLIENT_ID }}
-        GITHUB_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-        GITHUB_HOMEPAGE_URL: ${{ secrets.HOMEPAGE_URL }}
-        GITHUB_REDIRECT_URI: ${{ secrets.REDIRECT_URI }}
-        GITHUB_WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
-        GITHUB_PAT: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
-        SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
-        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-        JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
-        ENVIRONMENT: test
       run: |
         pytest app/tests/
