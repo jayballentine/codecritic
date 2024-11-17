@@ -27,5 +27,18 @@ jobs:
     - name: Run pytest
       env:
         PYTHONPATH: .
+        SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+        SUPABASE_KEY: ${{ secrets.SUPABASE_KEY }}
+        GITHUB_CLIENT_ID: ${{ secrets.CLIENT_ID }}
+        GITHUB_CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+        GITHUB_HOMEPAGE_URL: ${{ secrets.HOMEPAGE_URL }}
+        GITHUB_REDIRECT_URI: ${{ secrets.REDIRECT_URI }}
+        GITHUB_WEBHOOK_URL: ${{ secrets.WEBHOOK_URL }}
+        GITHUB_PAT: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        SENDGRID_API_KEY: ${{ secrets.SENDGRID_API_KEY }}
+        OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+        ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
+        ENVIRONMENT: test
       run: |
         pytest app/tests/
