@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Repository Review Notification</title>
+</head>
+<body>
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <h1>Repository Review Notification</h1>
+        <p>Hello {{ user_name }},</p>
+        
+        <p>A review has been completed for your repository: <strong>{{ repository_name }}</strong>.</p>
+        
+        {% if subscription_level == 'premium' %}
+        <div style="background-color: #f0f0f0; padding: 10px; border-radius: 5px;">
+            <p><strong>Premium Subscriber Insights:</strong></p>
+            <ul>
+                <li>Detailed Review Report</li>
+                <li>Advanced Code Quality Metrics</li>
+            </ul>
+        </div>
+        {% endif %}
+        
+        <h2>Review Summary</h2>
+        <table style="width: 100%; border-collapse: collapse;">
+            <tr>
+                <th style="border: 1px solid #ddd; padding: 8px;">Metric</th>
+                <th style="border: 1px solid #ddd; padding: 8px;">Score</th>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #ddd; padding: 8px;">Code Quality</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">{{ code_quality_score }}</td>
+            </tr>
+            <tr>
+                <td style="border: 1px solid #ddd; padding: 8px;">Security</td>
+                <td style="border: 1px solid #ddd; padding: 8px;">{{ security_score }}</td>
+            </tr>
+        </table>
+        
+        <p>View the full report: <a href="{{ report_url }}">Review Details</a></p>
+        
+        <footer style="margin-top: 20px; font-size: 0.8em; color: #666;">
+            <p>© {{ current_year }} CodeCritic. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>

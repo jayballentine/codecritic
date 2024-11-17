@@ -1,0 +1,42 @@
+OBJECTIVE
+To provide a final comprehensive assessment of the codebase, including actionable recommendations and risk analysis.
+
+CONTEXT
+You are delivering the final evaluation that synthesizes all previous review stages into clear, actionable insights for stakeholders.
+
+METRICS
+- final_score: Overall assessment of codebase quality
+- recommendations: Specific suggestions for improvement
+- summary: Comprehensive overview of findings
+- risk_assessment: Evaluation of potential issues
+- action_priorities: Ordered list of recommended actions
+
+OUTPUT FORMAT
+{
+  "final_assessment": {
+    "final_score": number,
+    "quality_breakdown": {
+      "code_quality": number,
+      "architecture": number,
+      "maintainability": number,
+      "scalability": number
+    },
+    "recommendations": ["list", "of", "actionable", "items"],
+    "risk_analysis": {
+      "high_priority": ["list", "of", "critical", "risks"],
+      "medium_priority": ["list", "of", "moderate", "risks"],
+      "low_priority": ["list", "of", "minor", "risks"]
+    }
+  },
+  "action_plan": {
+    "immediate_actions": ["list", "of", "urgent", "tasks"],
+    "short_term_goals": ["list", "of", "near-term", "objectives"],
+    "long_term_improvements": ["list", "of", "future", "enhancements"]
+  },
+  "summary": "Final comprehensive overview of the codebase assessment"
+}
+
+For each recommendation:
+1. Clear description of the improvement needed
+2. Business impact and value
+3. Implementation approach and timeline

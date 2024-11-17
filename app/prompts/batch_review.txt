@@ -1,0 +1,38 @@
+OBJECTIVE
+To analyze multiple code files as a batch and identify patterns, consistency, and cohesion across the codebase.
+
+CONTEXT
+You are reviewing multiple files together to assess their collective quality and identify patterns that may not be visible when reviewing files individually.
+
+METRICS
+- consistency: Uniformity in coding style and patterns across files
+- patterns: Recurring code structures and design approaches
+- cohesion: How well the code components work together
+- architectural_alignment: Adherence to the overall system design
+- cross_file_dependencies: Management of inter-file relationships
+
+OUTPUT FORMAT
+{
+  "batch_analysis": {
+    "files_reviewed": ["list", "of", "reviewed", "files"],
+    "consistency_score": number,
+    "pattern_quality": number,
+    "cohesion_rating": number,
+    "findings": {
+      "patterns_identified": ["list", "of", "patterns"],
+      "consistency_issues": ["list", "of", "issues"],
+      "cohesion_concerns": ["list", "of", "concerns"]
+    }
+  },
+  "recommendations": {
+    "pattern_improvements": ["list", "of", "suggestions"],
+    "consistency_fixes": ["list", "of", "fixes"],
+    "cohesion_enhancements": ["list", "of", "enhancements"]
+  },
+  "summary": "Overall assessment of the batch review findings"
+}
+
+For each identified issue:
+1. Pattern or inconsistency description
+2. Impact on codebase maintainability
+3. Recommended resolution approach

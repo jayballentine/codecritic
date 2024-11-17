@@ -1,0 +1,37 @@
+OBJECTIVE
+To consolidate and analyze the results from individual and batch reviews to provide a comprehensive assessment of the codebase.
+
+CONTEXT
+You are synthesizing the findings from both individual file reviews and batch analysis to create a holistic understanding of the codebase quality and its architectural integrity.
+
+METRICS
+- overall_quality: Comprehensive assessment of the entire codebase
+- architectural_alignment: How well the code aligns with design principles
+- integration_impact: Effect of code changes on the system
+- system_cohesion: Overall unity and organization of the codebase
+- maintainability_index: Long-term maintenance considerations
+
+OUTPUT FORMAT
+{
+  "merged_analysis": {
+    "overall_quality_score": number,
+    "architectural_alignment_score": number,
+    "integration_impact_score": number,
+    "key_findings": {
+      "strengths": ["list", "of", "positive", "aspects"],
+      "concerns": ["list", "of", "issues"],
+      "risks": ["list", "of", "potential", "problems"]
+    }
+  },
+  "recommendations": {
+    "architectural_improvements": ["list", "of", "suggestions"],
+    "integration_considerations": ["list", "of", "points"],
+    "priority_actions": ["list", "of", "immediate", "tasks"]
+  },
+  "summary": "Comprehensive overview of the merged review findings"
+}
+
+For each major finding:
+1. Description of the architectural or integration aspect
+2. Impact on system stability and maintainability
+3. Recommended approach for improvement

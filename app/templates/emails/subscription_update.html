@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Subscription Update</title>
+</head>
+<body>
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+        <h1>Subscription Update</h1>
+        <p>Hello {{ user_name }},</p>
+        
+        <div style="background-color: #e6f3ff; padding: 15px; border-radius: 5px;">
+            <h2>Your Subscription Has Been {{ status|upper }}</h2>
+            
+            {% if status == 'upgraded' %}
+            <p>Congratulations! You've upgraded to our {{ new_tier }} tier.</p>
+            <h3>New Benefits:</h3>
+            <ul>
+                <li>Unlimited repository reviews</li>
+                <li>Advanced code quality insights</li>
+                <li>Priority support</li>
+            </ul>
+            {% elif status == 'downgraded' %}
+            <p>Your subscription has been downgraded to the {{ new_tier }} tier.</p>
+            <h3>Current Benefits:</h3>
+            <ul>
+                <li>Limited repository reviews</li>
+                <li>Basic code quality insights</li>
+                <li>Standard support</li>
+            </ul>
+            {% endif %}
+        </div>
+        
+        <p>Manage your subscription: <a href="{{ subscription_management_url }}">Subscription Settings</a></p>
+        
+        <footer style="margin-top: 20px; font-size: 0.8em; color: #666;">
+            <p>© {{ current_year }} CodeCritic. All rights reserved.</p>
+            <p>Questions? Contact our support team.</p>
+        </footer>
+    </div>
+</body>
+</html>
