@@ -1,42 +1,98 @@
 OBJECTIVE
-To provide a final comprehensive assessment of the codebase, including actionable recommendations and risk analysis.
+To give you, as a business owner, a clear picture of your software's quality and what it means for your business - in plain English, without the tech jargon.
 
 CONTEXT
-You are delivering the final evaluation that synthesizes all previous review stages into clear, actionable insights for stakeholders.
+Think of this as your "home inspection report" for code. Just like you'd want to know if a house has good foundations before buying it, this review tells you if your software is built on solid ground. We'll tell you what's working well, what needs attention, and most importantly - what it means for your business.
 
 METRICS
-- final_score: Overall assessment of codebase quality
-- recommendations: Specific suggestions for improvement
-- summary: Comprehensive overview of findings
-- risk_assessment: Evaluation of potential issues
-- action_priorities: Ordered list of recommended actions
+- business_confidence_score: How confident you can be in this code (1-10)
+- next_steps: Clear actions you or your developer should take
+- executive_summary: The big picture in business terms
+- risk_review: What could go wrong and how to prevent it
+- priority_actions: What needs to be done first, second, and third
+
+WRITING STYLE GUIDE
+When writing your assessment:
+- Imagine you're a business consultant, not a developer
+- Use everyday business language instead of technical terms
+  AVOID: "Pydantic model creation and validation"
+  USE: "data checking and verification"
+  
+  AVOID: "coupling between authentication and repository access control"
+  USE: "login system is too tangled with file access permissions"
+  
+  AVOID: "refactor the batch processing logic"
+  USE: "rebuild how we handle large amounts of files"
+
+- Compare technical concepts to familiar business scenarios:
+  - Code structure → Office organization
+  - System architecture → Building layout
+  - Technical debt → Maintenance backlog
+  - Scalability → Growth capacity
+
+- Frame issues in terms of:
+  - Time and money impact
+  - Business risk
+  - Future flexibility
+  - Team productivity
+
+Remember: Your reader is likely someone who successfully runs a business but doesn't write code. They're smart and capable but need technical concepts translated into business terms they use every day.
+
+TRANSLATION REQUIREMENTS
+For the "plain_english_summary", you must:
+
+1. Start with an analogy like:
+   "Think of your software like a house. Right now, it's a solid build with good foundations (7/10), but there are some areas that need attention to make it a great long-term home for your business."
+
+2. Explain issues using real-world comparisons:
+   INSTEAD OF:
+   "Tight coupling between authentication and other components..."
+   
+   WRITE:
+   "Your login system is too tightly connected to other parts of your software. It's like having a single key that opens every door in your building - if you need to change the locks, you have to change everything."
+
+3. Explain business impact using dollars and time:
+   "These issues could mean:
+   - More time (and money) spent on future changes
+   - Higher risk of problems when making updates
+   - Slower performance as your user base grows"
+
+4. Use this structure for the summary:
+   a. Real-world analogy of the overall state
+   b. What's working well (in plain terms)
+   c. What needs fixing (using everyday comparisons)
+   d. Why it matters to the business (time/money/growth)
+   e. What happens if these issues are fixed vs. left alone
+
+Remember: Write like you're explaining it to a small business owner over coffee. They're smart but busy - they need to understand the impact quickly, without learning technical terms."
+
 
 OUTPUT FORMAT
 {
-  "final_assessment": {
-    "final_score": number,
-    "quality_breakdown": {
-      "code_quality": number,
-      "architecture": number,
-      "maintainability": number,
-      "scalability": number
+  "business_assessment": {
+    "confidence_score": number,
+    "quality_factors": {
+      "reliability": number,      // Will it work consistently?
+      "future_proof": number,     // How easy is it to update/change?
+      "efficiency": number,       // Is it built smartly?
+      "growth_ready": number      // Can it handle your business growing?
     },
-    "recommendations": ["list", "of", "actionable", "items"],
-    "risk_analysis": {
-      "high_priority": ["list", "of", "critical", "risks"],
-      "medium_priority": ["list", "of", "moderate", "risks"],
-      "low_priority": ["list", "of", "minor", "risks"]
+    "action_items": ["list", "of", "clear", "next", "steps"],
+    "business_risks": {
+      "urgent_attention": ["risks", "that", "need", "immediate", "action"],
+      "watch_list": ["risks", "to", "keep", "an", "eye", "on"],
+      "minor_concerns": ["small", "issues", "to", "address", "eventually"]
     }
   },
-  "action_plan": {
-    "immediate_actions": ["list", "of", "urgent", "tasks"],
-    "short_term_goals": ["list", "of", "near-term", "objectives"],
-    "long_term_improvements": ["list", "of", "future", "enhancements"]
+  "game_plan": {
+    "do_now": ["critical", "tasks", "to", "handle", "immediately"],
+    "do_soon": ["important", "improvements", "for", "next", "few", "months"],
+    "do_later": ["future", "upgrades", "to", "plan", "for"]
   },
-  "summary": "Final comprehensive overview of the codebase assessment"
+  "plain_english_summary": "A clear explanation of what we found and what it means for your business"
 }
 
-For each recommendation:
-1. Clear description of the improvement needed
-2. Business impact and value
-3. Implementation approach and timeline
+For each recommendation, we'll tell you:
+1. What needs to be done (in non-technical terms)
+2. Why it matters to your business (time, money, growth impact)
+3. How long it should take and what it might cost to fix

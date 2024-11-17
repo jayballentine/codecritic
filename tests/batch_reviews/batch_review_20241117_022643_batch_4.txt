@@ -1,0 +1,33 @@
+Here's a summary of the code review process based on the provided code:
+
+**Individual File Review**
+- The `FileReviewer` class handles the review of individual files.
+- It validates the file, prepares the review prompt, and sends it to the `ModelManager` to generate the review.
+- The review result is validated against the expected format before returning it.
+
+**Batch Review**
+- The `BatchReviewer` class handles the review of multiple files as a batch.
+- It prepares the batch review prompt, sends it to the `ModelManager`, and validates the received review result.
+- The batch review includes metrics like consistency, pattern quality, and cohesion.
+
+**Merged Batch Review**
+- The `MergedBatchReviewer` class merges and analyzes multiple batch reviews.
+- It calculates aggregate metrics, prepares the merged review prompt, and sends it to the `ModelManager`.
+- The merged review result is validated before returning it.
+
+**Final Review**
+- The `FinalReviewer` class generates the final comprehensive review based on the merged batch review.
+- It prepares the final review prompt, sends it to the `ModelManager`, and validates the received review result.
+- The final review includes an overall quality assessment, architectural alignment, integration impact, and detailed recommendations.
+
+**Numerical Calculations**
+- The `NumericalProcessor` class handles the calculation of numerical metrics for individual file reviews, batch reviews, and merged batch reviews.
+- It provides methods to calculate average metrics and extract qualitative data from the reviews.
+
+**Services**
+- The `AuthService` handles user authentication and password reset functionality using Supabase.
+- The `EmailService` provides methods for sending emails with subscription-aware templating.
+- The `ReportGenerationService` generates code review reports with different levels of detail based on the user's subscription tier.
+- The `SubscriptionService` (not included in the provided code) would handle all subscription-related business logic, such as subscription creation, payment processing, plan upgrades/downgrades, and usage tracking.
+
+The overall architecture separates concerns, with dedicated classes for different aspects of the code review process. This modular design allows for easier maintenance, testing, and potential future extensions or modifications to the system.

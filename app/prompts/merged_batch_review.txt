@@ -1,37 +1,86 @@
 OBJECTIVE
-To consolidate and analyze the results from individual and batch reviews to provide a comprehensive assessment of the codebase.
+To combine all batch reviews into organized findings that will help assess business confidence, risks, and actionability in the final review.
 
 CONTEXT
-You are synthesizing the findings from both individual file reviews and batch analysis to create a holistic understanding of the codebase quality and its architectural integrity.
+This step organizes all technical findings into categories that will directly inform business decisions about reliability, maintenance costs, growth capacity, and risk management.
 
 METRICS
-- overall_quality: Comprehensive assessment of the entire codebase
-- architectural_alignment: How well the code aligns with design principles
-- integration_impact: Effect of code changes on the system
-- system_cohesion: Overall unity and organization of the codebase
-- maintainability_index: Long-term maintenance considerations
+- code_reliability: Problems that could affect daily operations
+- maintenance_burden: Time/cost implications of the code structure
+- growth_capacity: Ability to handle business expansion
+- development_efficiency: How efficiently resources are being used
 
 OUTPUT FORMAT
 {
-  "merged_analysis": {
-    "overall_quality_score": number,
-    "architectural_alignment_score": number,
-    "integration_impact_score": number,
-    "key_findings": {
-      "strengths": ["list", "of", "positive", "aspects"],
-      "concerns": ["list", "of", "issues"],
-      "risks": ["list", "of", "potential", "problems"]
+  "technical_foundation": {
+    "reliability_indicators": {
+      "score": number,
+      "strong_points": ["list", "of", "reliability", "positives"],
+      "vulnerabilities": ["list", "of", "reliability", "concerns"],
+      "stability_patterns": {
+        "positive": ["patterns", "supporting", "stability"],
+        "negative": ["patterns", "threatening", "stability"]
+      }
+    },
+    "maintenance_assessment": {
+      "score": number,
+      "cost_factors": {
+        "time_intensive_areas": ["parts", "requiring", "frequent", "updates"],
+        "efficiency_blockers": ["issues", "increasing", "maintenance", "time"],
+        "improvement_opportunities": ["ways", "to", "reduce", "maintenance"]
+      }
+    },
+    "scalability_evaluation": {
+      "score": number,
+      "growth_readiness": {
+        "strong_foundations": ["areas", "ready", "for", "growth"],
+        "bottlenecks": ["areas", "that", "could", "limit", "growth"],
+        "improvement_needs": ["changes", "needed", "for", "scaling"]
+      }
+    },
+    "development_efficiency": {
+      "score": number,
+      "resource_impact": {
+        "time_savers": ["practices", "speeding", "development"],
+        "time_wasters": ["practices", "slowing", "development"],
+        "collaboration_barriers": ["issues", "affecting", "team", "efficiency"]
+      }
     }
   },
-  "recommendations": {
-    "architectural_improvements": ["list", "of", "suggestions"],
-    "integration_considerations": ["list", "of", "points"],
-    "priority_actions": ["list", "of", "immediate", "tasks"]
+  "risk_patterns": {
+    "immediate_concerns": {
+      "critical_issues": ["urgent", "problems", "needing", "attention"],
+      "business_impact": ["how", "these", "affect", "operations"],
+      "fix_complexity": ["effort", "required", "to", "resolve"]
+    },
+    "medium_term_risks": {
+      "emerging_issues": ["problems", "that", "could", "grow"],
+      "impact_timeline": ["when", "these", "become", "critical"],
+      "prevention_steps": ["how", "to", "avoid", "escalation"]
+    },
+    "long_term_considerations": {
+      "future_challenges": ["potential", "future", "problems"],
+      "growth_implications": ["how", "these", "affect", "scaling"],
+      "strategic_needs": ["long", "term", "improvements", "needed"]
+    }
   },
-  "summary": "Comprehensive overview of the merged review findings"
+  "actionability_assessment": {
+    "quick_wins": {
+      "tasks": ["immediate", "high-value", "fixes"],
+      "impact": ["business", "benefits"],
+      "effort": ["time", "and", "resource", "needs"]
+    },
+    "strategic_improvements": {
+      "tasks": ["longer", "term", "enhancements"],
+      "benefits": ["business", "value"],
+      "requirements": ["resources", "needed"]
+    }
+  },
+  "consolidated_summary": "Summary focusing on business impact and actionability"
 }
 
-For each major finding:
-1. Description of the architectural or integration aspect
-2. Impact on system stability and maintainability
-3. Recommended approach for improvement
+For each finding, include:
+1. Technical observation
+2. Business implication
+3. Resource requirements (time, cost, expertise)
+4. Priority level based on business impact

@@ -1,38 +1,63 @@
 OBJECTIVE
-To analyze multiple code files as a batch and identify patterns, consistency, and cohesion across the codebase.
+To analyze groups of code files together to spot patterns, strengths, and potential issues that affect reliability and maintainability.
 
 CONTEXT
-You are reviewing multiple files together to assess their collective quality and identify patterns that may not be visible when reviewing files individually.
+You are examining multiple files as a group to understand how well they work together, identifying both positive patterns and areas needing improvement that will inform our overall project assessment.
 
 METRICS
-- consistency: Uniformity in coding style and patterns across files
-- patterns: Recurring code structures and design approaches
-- cohesion: How well the code components work together
-- architectural_alignment: Adherence to the overall system design
-- cross_file_dependencies: Management of inter-file relationships
+- consistency: How uniform and predictable the code is across files
+- patterns: Common approaches and their impact on reliability
+- cohesion: How logically organized and connected the code is
+- design_alignment: How well the code follows a clear structure
+- file_relationships: How different parts of the code depend on each other
 
 OUTPUT FORMAT
 {
   "batch_analysis": {
     "files_reviewed": ["list", "of", "reviewed", "files"],
-    "consistency_score": number,
-    "pattern_quality": number,
-    "cohesion_rating": number,
-    "findings": {
-      "patterns_identified": ["list", "of", "patterns"],
-      "consistency_issues": ["list", "of", "issues"],
-      "cohesion_concerns": ["list", "of", "concerns"]
+    "reliability_indicators": {
+      "consistency_score": number,
+      "pattern_quality": number,
+      "cohesion_rating": number,
+      "key_observations": {
+        "strong_patterns": ["positive", "patterns", "found"],
+        "consistency_gaps": ["areas", "needing", "standardization"],
+        "organization_issues": ["structural", "concerns"]
+      }
+    },
+    "maintenance_factors": {
+      "time_saving_patterns": ["efficient", "approaches", "identified"],
+      "maintenance_challenges": ["areas", "requiring", "extra", "effort"],
+      "dependency_complexities": ["relationship", "management", "issues"]
+    },
+    "growth_impact": {
+      "scalable_patterns": ["practices", "supporting", "growth"],
+      "scaling_bottlenecks": ["practices", "limiting", "growth"],
+      "improvement_areas": ["opportunities", "for", "enhancement"]
     }
   },
-  "recommendations": {
-    "pattern_improvements": ["list", "of", "suggestions"],
-    "consistency_fixes": ["list", "of", "fixes"],
-    "cohesion_enhancements": ["list", "of", "enhancements"]
+  "actionable_findings": {
+    "pattern_improvements": {
+      "suggestions": ["list", "of", "improvements"],
+      "effort_level": ["implementation", "complexity"],
+      "business_value": ["expected", "benefits"]
+    },
+    "consistency_fixes": {
+      "recommendations": ["list", "of", "standardization", "needs"],
+      "implementation_approach": ["how", "to", "address"],
+      "priority_level": ["urgency", "assessment"]
+    },
+    "organization_enhancements": {
+      "suggestions": ["list", "of", "structural", "improvements"],
+      "resource_needs": ["required", "effort"],
+      "expected_benefits": ["positive", "outcomes"]
+    }
   },
-  "summary": "Overall assessment of the batch review findings"
+  "batch_summary": "Clear assessment of findings and their implications"
 }
 
-For each identified issue:
-1. Pattern or inconsistency description
-2. Impact on codebase maintainability
-3. Recommended resolution approach
+For each identified pattern or issue:
+1. Clear description of what was found
+2. Impact on code reliability and maintenance
+3. Resource needs for addressing it
+4. Priority based on business impact

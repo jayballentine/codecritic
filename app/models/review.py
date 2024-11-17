@@ -1,8 +1,9 @@
 from typing import List, Dict, Optional
-from app.db.session import get_supabase_client
 import uuid
 import statistics
 from datetime import datetime
+import json
+from pathlib import Path
 
 class Review:
     def __init__(
@@ -115,10 +116,17 @@ class Review:
 
     def save(self):
         """
-        Save the review to Supabase.
+        Save the review to a JSON file (for testing).
         """
-        supabase = get_supabase_client()
+        # Create reviews directory if it doesn't exist
+        output_dir = Path("reviews")
+        output_dir.mkdir(exist_ok=True)
         
+        # Generate filename with timestamp
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        filename = output_dir / f"review_{timestamp}.json"
+        
+        # Prepare review data
         review_data = {
             'review_id': self.review_id,
             'repo_id': self.repo_id,
@@ -130,33 +138,38 @@ class Review:
             'code_quality_metrics': self.code_quality_metrics
         }
         
-        # Upsert the review
-        result = supabase.table('reviews').upsert(review_data).execute()
-        return result
+        # Save to file
+        with open(filename, 'w') as f:
+            json.dump(review_data, f, indent=2)
+        
+        return filename
 
     @classmethod
     def get(cls, review_id: str) -> 'Review':
         """
-        Retrieve a review from Supabase by its ID.
+        Retrieve a review from file by its ID.
         
         :param review_id: Unique identifier of the review
         :return: Review instance
         """
-        supabase = get_supabase_client()
-        
-        response = supabase.table('reviews').select('*').eq('review_id', review_id).execute()
-        
-        if not response.data:
+        reviews_dir = Path("reviews")
+        if not reviews_dir.exists():
             return None
         
-        review_data = response.data[0]
-        return cls(
-            review_id=review_data['review_id'],
-            repo_id=review_data['repo_id'],
-            repository_name=review_data.get('repository_name'),
-            file_reviews=review_data.get('file_reviews', []),
-            batch_reviews=review_data.get('batch_reviews', []),
-            final_review=review_data.get('final_review'),
-            timestamp=datetime.fromisoformat(review_data.get('timestamp', datetime.utcnow().isoformat())),
-            code_quality_metrics=review_data.get('code_quality_metrics', {})
-        )
+        # Look for review file with matching ID
+        for file in reviews_dir.glob("*.json"):
+            with open(file, 'r') as f:
+                review_data = json.load(f)
+                if review_data['review_id'] == review_id:
+                    return cls(
+                        review_id=review_data['review_id'],
+                        repo_id=review_data['repo_id'],
+                        repository_name=review_data.get('repository_name'),
+                        file_reviews=review_data.get('file_reviews', []),
+                        batch_reviews=review_data.get('batch_reviews', []),
+                        final_review=review_data.get('final_review'),
+                        timestamp=datetime.fromisoformat(review_data.get('timestamp', datetime.utcnow().isoformat())),
+                        code_quality_metrics=review_data.get('code_quality_metrics', {})
+                    )
+        
+        return None
